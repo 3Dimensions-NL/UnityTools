@@ -1,6 +1,5 @@
 using System.Collections;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts
 {
@@ -30,7 +29,9 @@ namespace _3Dimensions.Tools.Runtime.Scripts
             else
             {
                 StopCoroutine(TakeScreenshot());
-                EditorUtility.ClearProgressBar();
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.ClearProgressBar();
+#endif
             }
             
             screenshot.ScreenshotCreated -= ScreenshotCreated;
@@ -60,7 +61,12 @@ namespace _3Dimensions.Tools.Runtime.Scripts
             screenshot.fileSuffix = " (" + (_screenshotsTaken + 1).ToString("D3") + ")";
             screenshot.TakeScreenshot();
             
-            EditorUtility.DisplayProgressBar("Taking screenshots", "Screenshot " + (_screenshotsTaken + 1) + "/" + gameObjectSteps.steps.Length, (float)_screenshotsTaken / (float) gameObjectSteps.steps.Length);
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.DisplayProgressBar(
+                "Taking screenshots", 
+                "Screenshot " + (_screenshotsTaken + 1) + "/" + gameObjectSteps.steps.Length, 
+                (float)_screenshotsTaken / (float) gameObjectSteps.steps.Length);
+#endif
         }
     }
 }
