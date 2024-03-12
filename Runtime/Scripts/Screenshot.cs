@@ -4,7 +4,7 @@ using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-namespace _3Dimensions.Runtime.Scripts
+namespace _3Dimensions.Tools.Runtime.Scripts
 {
     public class Screenshot : MonoBehaviour
     {
