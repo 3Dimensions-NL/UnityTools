@@ -1,8 +1,6 @@
-﻿#if UNITY_EDITOR
-using System;
+﻿using System;
 using System.Collections;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts
 {
@@ -25,9 +23,13 @@ namespace _3Dimensions.Tools.Runtime.Scripts
 
         public void SetPath()
         {
-            path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
-            EditorUtility.SetDirty(this);
-            Debug.Log("Path Set");
+#if UNITY_EDITOR
+            path = UnityEditor.EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
+            UnityEditor.EditorUtility.SetDirty(this);
+#else
+            path = Application.dataPath + "/screenshots";
+#endif
+            Debug.Log("Path Set to: " + path);
         }
 
         [Button]
@@ -98,8 +100,9 @@ namespace _3Dimensions.Tools.Runtime.Scripts
             
             ScreenshotCreated?.Invoke();
             
-            EditorUtility.SetDirty(this);
+            #if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+            #endif
         }
     }
 }
-#endif
