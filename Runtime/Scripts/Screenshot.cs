@@ -1,11 +1,10 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-
-namespace _3Dimensions.Utilities
+namespace _3Dimensions.Runtime.Scripts
 {
     public class Screenshot : MonoBehaviour
     {
