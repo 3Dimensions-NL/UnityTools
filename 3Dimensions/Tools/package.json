@@ -7,5 +7,6 @@
     "keywords": ["key X", "key Y", "key Z"],
     "category": "Controllers",
     "dependencies": {
+        "com.serenix.odininspector"
     }
 }
