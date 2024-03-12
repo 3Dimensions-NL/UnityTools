@@ -8,5 +8,10 @@
     "category": "Editor Tools",
     "dependencies": {
         "com.unity.textmeshpro": "3.0.8"
+    },
+    "author": {
+        "name": "3Dimensions v.o.f.",
+        "email": "info@3dimensions.nl",
+        "url": "https://www.3dimensions.nl"
     }
 }
