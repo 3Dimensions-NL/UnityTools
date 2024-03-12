@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.package-manager-ui",
-    "com.3dimensions.unity-tools": "file:../../3Dimensions/UnityTools"
+    "com.unity.textmeshpro": "3.0.8",
+    "com.3dimensions.unity-tools": "file:../../Tools"
   }
 }
