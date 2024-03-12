@@ -1,6 +1,5 @@
 using System.Collections;
 using Sirenix.OdinInspector;
-using Tools.Runtime.Scripts;
 using UnityEditor;
 using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts
@@ -11,21 +10,21 @@ namespace _3Dimensions.Tools.Runtime.Scripts
         [SerializeField] private Screenshot screenshot;
         [SerializeField] private float delayBeforeScreenshot = 0.5f;
         
-        private int screenshotsTaken;
+        private int _screenshotsTaken;
 
         [Button]
         private void TakeScreenshotsFromSteps()
         {
-            screenshotsTaken = 0;
+            _screenshotsTaken = 0;
             StartCoroutine(TakeScreenshot());
         }
         private void ScreenshotCreated()
         {
             Debug.Log("Screenshot created: " + screenshot.lastScreenshot);
 
-            if (screenshotsTaken < gameObjectSteps.steps.Length - 1)
+            if (_screenshotsTaken < gameObjectSteps.steps.Length - 1)
             {
-                screenshotsTaken++;
+                _screenshotsTaken++;
                 StartCoroutine(TakeScreenshot());
             }
             else
@@ -52,16 +51,16 @@ namespace _3Dimensions.Tools.Runtime.Scripts
             screenshot.ScreenshotCreated += ScreenshotCreated;
             screenshot.ScreenshotFailed += ScreenshotFailed;
             
-            gameObjectSteps.ActivateStep(screenshotsTaken);
+            gameObjectSteps.ActivateStep(_screenshotsTaken);
 
             yield return new WaitForSeconds(delayBeforeScreenshot);
             
             screenshot.useDate = false;
             screenshot.fileName = gameObject.name;
-            screenshot.fileSuffix = " (" + (screenshotsTaken + 1).ToString("D3") + ")";
+            screenshot.fileSuffix = " (" + (_screenshotsTaken + 1).ToString("D3") + ")";
             screenshot.TakeScreenshot();
             
-            EditorUtility.DisplayProgressBar("Taking screenshots", "Screenshot " + (screenshotsTaken + 1) + "/" + gameObjectSteps.steps.Length, (float)screenshotsTaken / (float) gameObjectSteps.steps.Length);
+            EditorUtility.DisplayProgressBar("Taking screenshots", "Screenshot " + (_screenshotsTaken + 1) + "/" + gameObjectSteps.steps.Length, (float)_screenshotsTaken / (float) gameObjectSteps.steps.Length);
         }
     }
 }

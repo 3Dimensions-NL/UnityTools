@@ -1,7 +1,9 @@
 {
     "name": "3Dimensions.UnityTools.Editor",
     "rootNamespace": "_3Dimensions",
-    "references": [],
+    "references": [
+        "GUID:ab29c8d4cbd19d848b9ec4113acae3c5"
+    ],
     "includePlatforms": [
         "Editor"
     ],

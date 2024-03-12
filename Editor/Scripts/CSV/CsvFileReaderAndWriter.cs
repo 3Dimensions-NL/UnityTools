@@ -49,7 +49,6 @@ namespace Tools.Editor.Scripts.CSV
             // read char by char and when a , or \n, perform appropriate action
             int cur_file_index = 0; // index in the file
             List<string> cur_line = new List<string>(); // current line of data
-            int cur_line_number = 0;
             StringBuilder cur_item = new StringBuilder("");
             bool inside_quotes = false; // managing quotes
             while (cur_file_index < file_length)

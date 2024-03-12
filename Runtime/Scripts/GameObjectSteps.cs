@@ -1,6 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-namespace Tools.Runtime.Scripts
+namespace _3Dimensions.Tools.Runtime.Scripts
 {
     public class GameObjectSteps : MonoBehaviour
     {
