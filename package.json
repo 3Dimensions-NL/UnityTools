@@ -1,11 +1,11 @@
 {
-    "name": "com.unity.package-4",
-    "displayName": "Package Number 4",
-    "version": "2.5.1",
-    "unity": "2018.1",
-    "description": "This package provides X, Y, and Z. \n\nTo find out more, click the \"View Documentation\" link.",
-    "keywords": ["key X", "key Y", "key Z"],
-    "category": "Controllers",
+    "name": "com.3dimensions.tools",
+    "displayName": "3Dimensions Unity Tools",
+    "version": "0.0.1",
+    "unity": "2022.3",
+    "description": "This package contains some tools writen and used by 3Dimensions",
+    "keywords": ["Component, Editor, Tools"],
+    "category": "Editor Tools",
     "dependencies": {
         "com.serenix.odininspector"
     }
