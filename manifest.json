@@ -2,6 +2,7 @@
   "dependencies": {
     "com.unity.package-manager-ui",
     "com.unity.analytics": "exclude",
-    "com.3dimensions.unity-tools": "file:../../UnityTools"
+    "com.serenix.odin-inspector",
+    "com.3dimensions.unity-tools": "file:../../3Dimensions/UnityTools"
   }
 }
