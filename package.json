@@ -1,7 +1,7 @@
 {
     "name": "com.3dimensions.tools",
     "displayName": "3Dimensions Unity Tools",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "unity": "2022.3",
     "description": "This package contains some tools written and used by 3Dimensions",
     "keywords": ["Component, Editor, Tools"],
