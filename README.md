@@ -1,5 +1,5 @@
 # UnityTools
-Collection of quality of life tools for Unity.
+A collection of quality of life tools for Unity we use in our development.
 
 ## Important!
 ### Dependancies outside Packages
