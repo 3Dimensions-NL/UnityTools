@@ -2,7 +2,7 @@
 A collection of quality of life tools for Unity we use in our development.
 
 ## Important!
-### Dependancies outside Packages
+### Dependencies outside Packages
 
 ```
 We use the Odin Inspector for dynamic inspectors.
