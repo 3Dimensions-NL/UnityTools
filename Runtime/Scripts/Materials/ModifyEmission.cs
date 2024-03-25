@@ -1,6 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-namespace _3Dimensions.Utilities.Materials
+namespace _3Dimensions.Tools.Runtime.Scripts.Materials
 {
     [ExecuteAlways]
     public class ModifyEmission : MonoBehaviour

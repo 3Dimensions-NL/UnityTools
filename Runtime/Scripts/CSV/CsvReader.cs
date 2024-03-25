@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
-
-namespace _3Dimensions.Utilities.Data
+namespace _3Dimensions.Tools.Runtime.Scripts.CSV
 {
     public static class CsvReader
     {

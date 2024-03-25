@@ -37,8 +37,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Animation
             _forwardVelocity = velocityScaleForward * Vector3.Dot(relativePosition, transform.forward) * Time.deltaTime;
             _strafeVelocity = velocityScaleStrafe * Vector3.Dot(relativePosition, transform.right) * Time.deltaTime;
             
-            Debug.Log("Forward Velocity = " + _forwardVelocity + " Strafe Velocity = " + _strafeVelocity); 
-            
             _forwardVelocity = Mathf.Lerp(_lastForwardVelocity, _forwardVelocity, Time.deltaTime * animationChangeSpeed);
             _strafeVelocity = Mathf.Lerp(_lastStrafeVelocity, _strafeVelocity, Time.deltaTime * animationChangeSpeed);
             

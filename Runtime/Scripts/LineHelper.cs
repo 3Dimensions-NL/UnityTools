@@ -3,10 +3,7 @@ using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts
 {
 #if UNITY_EDITOR
-    [UnityEditor.CanEditMultipleObjects]
-    [RequireComponent(typeof(LineRenderer))]
-    [ExecuteAlways]
-    [Serializable]
+    [UnityEditor.CanEditMultipleObjects, RequireComponent(typeof(LineRenderer)), ExecuteAlways, Serializable]
 #endif
 
     public class LineHelper : MonoBehaviour {
