@@ -58,7 +58,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts
             UnityEditor.EditorUtility.DisplayProgressBar(
                 "Taking screenshots", 
                 "Screenshot " + (_screenshotsTaken + 1) + "/" + gameObjectSteps.steps.Length, 
-                (float)_screenshotsTaken / (float) gameObjectSteps.steps.Length);
+                (float)(_screenshotsTaken + 1) / (float) gameObjectSteps.steps.Length);
 #endif
 
             yield return new WaitForSeconds(delayBeforeScreenshot);
