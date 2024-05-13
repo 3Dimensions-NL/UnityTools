@@ -22,7 +22,10 @@ namespace _3Dimensions.Tools.Runtime.Scripts
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                _viewCamera = UnityEditor.SceneView.GetAllSceneCameras()[0];
+                if (UnityEditor.SceneView.GetAllSceneCameras().Length != 0)
+                {
+                    _viewCamera = UnityEditor.SceneView.GetAllSceneCameras()[0];
+                }
             }
 #endif
             
