@@ -1,7 +1,7 @@
 using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
-namespace _3Dimensions.Tools.Runtime.Scripts
+namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
     public class GameObjectStepsScreenshotConnector : MonoBehaviour
     {

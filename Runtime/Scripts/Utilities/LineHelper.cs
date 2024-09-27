@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace _3Dimensions.Tools.Runtime.Scripts
+namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
 #if UNITY_EDITOR
     [UnityEditor.CanEditMultipleObjects, RequireComponent(typeof(LineRenderer)), ExecuteAlways, Serializable]

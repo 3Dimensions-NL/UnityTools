@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace _3Dimensions.Tools.Runtime.Scripts
+namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
     /// <summary>
     /// Utility to rotate an object in the direction of the main camera

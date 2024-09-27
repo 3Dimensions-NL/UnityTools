@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace _3Dimensions.Tools.Runtime.Scripts
+namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
     [ExecuteAlways]
     public class GameObjectCollectionVisibility : MonoBehaviour
