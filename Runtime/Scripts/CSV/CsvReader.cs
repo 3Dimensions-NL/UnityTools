@@ -6,8 +6,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.CSV
 {
     public static class CsvReader
     {
-        // static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
-
         static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
         static char[] TRIM_CHARS = { '\"' };
 
@@ -33,11 +31,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.CSV
             for (var i = 1; i < lines.Length; i++)
             {
                 var values = Regex.Split(lines[i], regex);
-
-                // foreach (var value in values)
-                // {               
-                //     Debug.Log("value = " + value);
-                // }
                 
                 if (values.Length == 0 || values.Length != header.Length) continue;
  
@@ -47,7 +40,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.CSV
                     string value = values[j];
                     
                     value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
-                    // Debug.Log("adding value: " + value);
+
                     object finalValue = value;
                     int n;
                     float f;
@@ -79,11 +72,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.CSV
             for (var i = 1; i < lines.Length; i++)
             {
                 var values = Regex.Split(lines[i], regex);
-
-                // foreach (var value in values)
-                // {               
-                //     Debug.Log("value = " + value);
-                // }
                 
                 if (values.Length == 0 || values.Length != header.Length) continue;
  
@@ -93,7 +81,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.CSV
                     string value = values[j];
                     
                     value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
-                    // Debug.Log("adding value: " + value);
+
                     object finalValue = value;
                     int n;
                     float f;

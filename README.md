@@ -11,22 +11,33 @@ A collection of utility tools designed to improve the development experience in 
 
 ## Tools Overview
 
-### 1. **Core Functionality**
-- Reusable tools that integrate into development pipelines.
-- Unity-specific utilities that enhance workflows and productivity.
+- Animation
+  - AnimationEvents script
+  - HumanAnimationController script (to help animate a character based on speed)
+- CSV reader
+- Level Design
+  - 2 object placement helper scripts (area and line based) that use ray-casting to align objects on a terrain for example.
+- Materials
+  - ModifyEmission script to edit a materials emission values at runtime
+- Scenario Creation
+  - A controller to manage all the scenario steps
+  - Object and Component activation scripts connected to scenario steps
+  - Trigger script to activate certain scenario steps
+- Text
+  - 2 TextMesh Pro animation script to simulate typing. (one for the standard TMP_Text object and the other for the TMP_InputField)
+- UI
+  - A CanvasSetInteractionCamera script for WorldSpace canvasses that need the current interaction camera.
+- Other Utilities
+  - GameObject helpers for activating and deactivating multiple objects
+  - LineHelper script to generate a LineRenderers positions
+  - LookAtCamera script for simple WorldSpace objects that need to point at the camera (texts for example)
+  - Screenshot script (also usable for exporting renders of multiple steps)
+  - SingleUnityLayer script to get a LayerMask from a single layer by index.
 
-### 2. **Utility Functions**
-- Provides developers with a collection of commonly used scripts and modules to reduce repetitive tasks.
-
-### 3. **Inspector Customization**
-- Extends the basic capabilities of Unity’s default inspector to simplify debugging and working with complex objects.
-
-### 4. **Debugging & Profiling**
-- Debugging helpers and profiling tools to track and optimize runtime performance.
 
 ## Requirements
 
-The tools package has been built and tested in **Unity Editor 2022.3.55f1** with the **Built-In Render Pipeline**. It has no external dependencies beyond Unity modules/packages.
+The tools package has been built and tested in **Unity Editor 2022.3.55f1** with the **Universal Render Pipeline**. It has no external dependencies beyond Unity modules/packages.
 
 ## Supported Unity Modules
 
@@ -55,7 +66,7 @@ The easiest way to use this tool is by adding the package directly from this rep
 3. In the Package Manager, select the `+` button in the top left corner and choose `Add package from git URL...`.
 4. Enter the following URL:
    ```
-   https://github.com/yourusername/your-repository.git
+   https://github.com/3Dimensions-NL/UnityTools.git
    ```
 5. Click `Add` to install the package.
 
@@ -74,8 +85,8 @@ Once the package is installed, the tools are ready to use. Navigate to the relev
 This package also includes a **Sample** with multiple demo example scenes to help you get started quickly. Upon importing the sample, you can explore the following demos:
 
 - **Scenario**: Demonstrates tools designed for managing scenarios.
-- **Text**: Includes examples showcasing text utilities and workflows.
-- **Utilities**: Contains demonstrations for general-purpose tools and utilities.
+- **Text**: Includes examples showcasing text animations
+- **Utilities**: Contains demonstrations for all the utility scripts.
 
 To import the sample:
 
