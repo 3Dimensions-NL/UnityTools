@@ -1,21 +1,25 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
 {
     public class ScenarioStep : MonoBehaviour
     {
         public UnityEvent onStepStarted;
         public UnityEvent onStepStopped;
-        
+
         public void MakeStepCurrent()
         {
             if (ScenarioController.Instance.CurrentStep == this) return;
-            ScenarioController.Instance.SetScenarioStep(this);
+            if (Application.isPlaying) ScenarioController.Instance.SetScenarioStep(this);
+            else ScenarioController.Instance.SetScenarioStepInEditor(this);
+
+            Debug.Log("Step " + name + " is now current.", this);
         }
 
 #if UNITY_EDITOR
-        [Button] 
+        // Replaces [Button] SetStepCurrent
+        [ContextMenu("Set Step Current")]
         private void SetStepCurrent()
         {
             ScenarioController controller = GetComponentInParent<ScenarioController>();
@@ -23,47 +27,43 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             else controller.SetScenarioStepInEditor(this);
         }
 
-        [HorizontalGroup("Steps")]
-        [Button("|<")]
+        // Replaces [Button] Navigation Buttons with ContextMenu options
+        [ContextMenu("Go To First Step")]
         private void First()
         {
             ScenarioController controller = GetComponentInParent<ScenarioController>();
             SetStepCurrent();
-            controller.FirstStep();
+            controller.SetFirstStep();
             SelectActiveStep();
         }
-        
-        [HorizontalGroup("Steps")]
-        [Button("<")]
+
+        [ContextMenu("Go To Previous Step")]
         private void PreviousStep()
         {
             ScenarioController controller = GetComponentInParent<ScenarioController>();
             SetStepCurrent();
-            controller.PreviousStep();
+            controller.SetPreviousStep();
             SelectActiveStep();
         }
 
-        [HorizontalGroup("Steps")]
-        [Button(">")]
+        [ContextMenu("Go To Next Step")]
         private void NextStep()
         {
             ScenarioController controller = GetComponentInParent<ScenarioController>();
             SetStepCurrent();
-            controller.NextStep();
+            controller.SetNextStep();
             SelectActiveStep();
         }
-        
-        [HorizontalGroup("Steps")]
-        [Button(">|")]
+
+        [ContextMenu("Go To Last Step")]
         private void LastStep()
         {
             ScenarioController controller = GetComponentInParent<ScenarioController>();
             SetStepCurrent();
-            controller.LastStep();
+            controller.SetLastStep();
             SelectActiveStep();
         }
 
-        
         private int GetStepIndex()
         {
             ScenarioController controller = GetComponentInParent<ScenarioController>();
@@ -72,8 +72,9 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 if (controller.scenarioSteps[i] == this)
                 {
                     return i;
-                } 
+                }
             }
+
             return 0;
         }
 

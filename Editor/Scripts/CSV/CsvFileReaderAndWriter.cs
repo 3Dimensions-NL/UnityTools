@@ -3,7 +3,8 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-namespace Tools.Editor.Scripts.CSV
+
+namespace _3Dimensions.Tools.Editor.Scripts.CSV
 {
     public static class CsvFileReaderAndWriter
     {

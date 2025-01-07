@@ -1,5 +1,5 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
 {
     public class ScenarioStepCorrectEffect : MonoBehaviour
@@ -24,8 +24,8 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 audioSource.loop = loop;
             }
         }
-        
-        void Start()
+
+        private void Start()
         {
             if (activeOnStart)
             {
@@ -36,7 +36,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 StopEffect();
             }
         }
-        
+
         private void Update()
         {
             if (stopAfterTime)
@@ -49,8 +49,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 }
             }
         }
-        
-        [Button]
+
         public void StartEffect()
         {
             _elapsedTime = 0;
@@ -58,7 +57,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             if (audioSource) audioSource.Play();
         }
 
-        [Button]
         public void StopEffect()
         {
             if (alarmLight)
@@ -66,6 +64,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 alarmLight.intensity = 0;
                 alarmLight.enabled = false;
             }
+
             if (audioSource) audioSource.Stop();
         }
     }

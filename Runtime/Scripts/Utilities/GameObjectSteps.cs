@@ -1,14 +1,13 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
     public class GameObjectSteps : MonoBehaviour
     {
         public GameObject[] steps;
         public int activeStep = 0;
-        
-        [Button]
-        private void CollectSteps()
+
+        public void CollectSteps()
         {
             steps = new GameObject[transform.childCount];
 
@@ -16,44 +15,41 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             {
                 steps[i] = transform.GetChild(i).gameObject;
             }
-            
-            #if UNITY_EDITOR
+
+#if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
-            #endif
+#endif
         }
 
-        [HorizontalGroup("Controls"), Button(Name = "|<")]
-        private void First()
+        public void First()
         {
             activeStep = 0;
             ActivateStep();
         }
 
-
-        [HorizontalGroup("Controls"), Button(Name = "<")]
-        private void Previous()
+        public void Previous()
         {
             activeStep--;
             if (activeStep <= 0)
             {
                 activeStep = 0;
             }
+
             ActivateStep();
         }
-        
-        [HorizontalGroup("Controls"), Button(Name = ">")]
-        private void Next()
+
+        public void Next()
         {
             activeStep++;
             if (activeStep >= steps.Length - 1)
             {
                 activeStep = steps.Length - 1;
             }
+
             ActivateStep();
         }
-        
-        [HorizontalGroup("Controls"), Button(Name = ">|")]
-        private void Last()
+
+        public void Last()
         {
             activeStep = steps.Length - 1;
             ActivateStep();
@@ -66,12 +62,12 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             activeStep = step;
             ActivateStep();
         }
-        
+
         private void ActivateStep()
         {
             for (int i = 0; i < steps.Length; i++)
             {
-                steps[i].gameObject.SetActive(activeStep == i);
+                steps[i].SetActive(activeStep == i);
             }
         }
     }

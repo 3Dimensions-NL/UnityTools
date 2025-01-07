@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets._3Dimensions.Utilities.Editor
+namespace _3Dimensions.Tools.Editor.Scripts
 {
     public static class ChangeMaterialsFromUrpToStandard
     {

@@ -2,25 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
 {
+    [ExecuteAlways]
     public class ScenarioComponentActivator : MonoBehaviour
     {
-        public List<ScenarioStep> stepsWhereActivated = new List<ScenarioStep>();
-        public List<Behaviour> componentsToActivate = new List<Behaviour>();
+        public List<ScenarioStep> stepsWhereActivated = new();
+        public List<Behaviour> componentsToActivate = new();
 
         private void OnEnable()
         {
-            ScenarioController.Instance.OnStepChangedEvent += InstanceOnOnStepChangedEvent;
-            
             //Check current step
-            InstanceOnOnStepChangedEvent(ScenarioController.Instance.CurrentStep);
+            ControllerOnStepChangeEvent(ScenarioController.Instance.CurrentStep);
         }
-        
-        private void OnDisable()
-        {
-            if (ScenarioController.Instance) ScenarioController.Instance.OnStepChangedEvent -= InstanceOnOnStepChangedEvent;
-        }
-        
-        private void InstanceOnOnStepChangedEvent(ScenarioStep newStep)
+
+        public void ControllerOnStepChangeEvent(ScenarioStep newStep)
         {
             bool isEnabled = stepsWhereActivated.Contains(newStep);
             

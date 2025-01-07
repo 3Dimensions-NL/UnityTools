@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts.Animation
 {
@@ -11,9 +10,9 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Animation
         [SerializeField] private float animationChangeSpeed = 20;
         
         private Vector3 _previousPosition;
-        [ShowInInspector] private float _forwardVelocity;
+        private float _forwardVelocity;
         private float _lastForwardVelocity;
-        [ShowInInspector] private float _strafeVelocity;
+        private float _strafeVelocity;
         private float _lastStrafeVelocity;
         private static readonly int ForwardVelocity = Animator.StringToHash("ForwardVelocity");
         private static readonly int StrafeVelocity = Animator.StringToHash("StrafeVelocity");

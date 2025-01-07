@@ -3,25 +3,26 @@ using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
 #if UNITY_EDITOR
-    [UnityEditor.CanEditMultipleObjects, RequireComponent(typeof(LineRenderer)), ExecuteAlways, Serializable]
+    [UnityEditor.CanEditMultipleObjects]
 #endif
-
+    [ExecuteAlways]
+    [Serializable]
+    [RequireComponent(typeof(LineRenderer))]
     public class LineHelper : MonoBehaviour {
 
         public bool worldSpace = true;
         public bool updateInRuntime = false;
         public bool useChildren;
+        public bool loop;
 
         private LineRenderer _lr;
         [SerializeField] Transform[] linePoints;
 
-        // Use this for initialization
         void Start () {
             _lr = GetComponent<LineRenderer>();
             _lr.generateLightingData = true;
         }
 	
-        // Update is called once per frame
         void LateUpdate () {
             if ((updateInRuntime && Application.isPlaying) || !Application.isPlaying)
             {
@@ -66,6 +67,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             }
             _lr.positionCount = positions.Length;
             _lr.SetPositions(positions);
+            _lr.loop = loop;
         }
     }
 }

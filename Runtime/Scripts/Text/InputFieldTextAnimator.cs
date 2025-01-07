@@ -1,6 +1,6 @@
-using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Text
 {
     [ExecuteAlways]
@@ -10,13 +10,16 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Text
 
         [SerializeField] private bool useAnimateCompletion;
         public string textToDisplay = "Some text";
-        
-        [BoxGroup("Timed animation"), HideIf("useAnimateCompletion")] public float onEnableDelay = 2f;
-        [BoxGroup("Timed animation"), HideIf("useAnimateCompletion")] public float nextCharacterDelay = 0.1f;
 
-        [BoxGroup("Animated completion"), ShowIf("useAnimateCompletion"), Range(0, 1)] public float animatedCompletion;
-        
-        [BoxGroup("Animated completion"), ShowIf("useAnimateCompletion"), ShowInInspector] private int CharacterCount => (int)(textToDisplay.Length * animatedCompletion);
+        // Fields for Timed Animation
+        [SerializeField] private float onEnableDelay = 2f;
+        [SerializeField] private float nextCharacterDelay = 0.1f;
+
+        // Fields for Animated Completion
+        [SerializeField] [Range(0, 1)] private float animatedCompletion;
+
+        // Property displayed only in the inspector
+        private int CharacterCount => (int)(textToDisplay.Length * animatedCompletion);
 
         private float _elapsedTime;
 
@@ -30,14 +33,13 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Text
             if (useAnimateCompletion)
             {
                 int shownCharacterCount = (int)(textToDisplay.Length * animatedCompletion);
-                
+
                 inputField.text = "";
 
                 for (int i = 0; i < shownCharacterCount; i++)
                 {
                     inputField.text += textToDisplay[i];
                 }
-                
             }
             else
             {

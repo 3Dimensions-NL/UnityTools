@@ -1,6 +1,6 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
 {
     public class ScenarioController : MonoBehaviour
@@ -15,10 +15,13 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
         }
 
         private static ScenarioController _instance;
-        
+
         public ScenarioStep[] scenarioSteps;
         private ScenarioObjectActivator[] _scenarioObjectActivators;
-        [ShowInInspector] public ScenarioStep CurrentStep {
+        private ScenarioComponentActivator[] _scenarioComponentActivators;
+
+        public ScenarioStep CurrentStep
+        {
             get
             {
                 if (scenarioSteps.Length == 0)
@@ -30,27 +33,49 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                         CreateScenarioStep();
                     }
                 }
-                
+
                 return scenarioSteps[_activeStepIndex];
+            }
+        }
+        
+        public ScenarioStep LastStep
+        {
+            get
+            {
+                if (scenarioSteps.Length == 0)
+                {
+                    scenarioSteps = GetComponentsInChildren<ScenarioStep>();
+
+                    if (scenarioSteps.Length == 0)
+                    {
+                        CreateScenarioStep();
+                    }
+                }
+
+                return scenarioSteps[_lastStepIndex];
             }
         }
 
         private int _activeStepIndex;
-        public int lastStepIndex;
-        
-        public delegate void OnStarted();
-        public event OnStarted OnStartedEvent;
-        public delegate void OnStopped();
-        public event OnStopped OnStoppedEvent;
-        
-        public delegate void OnStepChanged(ScenarioStep newStep);
-        public event OnStepChanged OnStepChangedEvent;
+        private int _lastStepIndex;
 
+        public delegate void OnStarted();
+
+        public event OnStarted OnStartedEvent;
+
+        public delegate void OnStopped();
+
+        public event OnStopped OnStoppedEvent;
+
+        public delegate void OnStepChanged(ScenarioStep newStep);
+
+        public event OnStepChanged OnStepChangedEvent;
 
         private void Awake()
         {
             GetScenarioSteps();
             GetScenarioObjectActivators();
+            GetScenarioComponentActivators();
 
             foreach (ScenarioStep step in scenarioSteps)
             {
@@ -61,38 +86,56 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
         public void Start()
         {
             _activeStepIndex = 0;
-            lastStepIndex = 0;
+            _lastStepIndex = 0;
             ActivateCurrentStep();
         }
-        
-        [Button (SdfIconType.Plus)]
+
+        // Standard method to replace [Button]
+#if UNITY_EDITOR
+        [ContextMenu("Create Scenario Step")]
+#endif
         private void CreateScenarioStep()
         {
-            GameObject newStep = new GameObject("New Step");
+            // Get the current number of steps to determine the appropriate index
+            int stepIndex = scenarioSteps.Length;
+
+            // Create a new GameObject for the step with a default name including its index
+            GameObject newStep = new GameObject($"New Step ({stepIndex})");
+
+            // Parent the new GameObject to this controller's transform
             newStep.transform.SetParent(transform);
+
+            // Add the ScenarioStep component to the new GameObject
             newStep.AddComponent<ScenarioStep>();
+
+            // Refresh the scenarioSteps array
             scenarioSteps = GetComponentsInChildren<ScenarioStep>();
         }
 
-        [Button]
+#if UNITY_EDITOR
+        [ContextMenu("Activate All Steps")]
+#endif
         private void ActivateAllSteps()
         {
             GetScenarioSteps();
             GetScenarioObjectActivators();
-            
+            GetScenarioComponentActivators();
+
             foreach (ScenarioStep step in scenarioSteps)
             {
                 step.gameObject.SetActive(true);
                 step.onStepStarted?.Invoke();
             }
-            
+
             foreach (ScenarioObjectActivator objectActivator in _scenarioObjectActivators)
             {
                 objectActivator.ForceOn();
             }
         }
-        
-        [Button]
+
+#if UNITY_EDITOR
+        [ContextMenu("Get Scenario Steps")]
+#endif
         public void GetScenarioSteps()
         {
             scenarioSteps = GetComponentsInChildren<ScenarioStep>(true);
@@ -102,51 +145,61 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
         {
             _scenarioObjectActivators = FindObjectsOfType<ScenarioObjectActivator>(true);
         }
+        
+        public void GetScenarioComponentActivators()
+        {
+            _scenarioComponentActivators = FindObjectsOfType<ScenarioComponentActivator>(true);
+        }
 
         private void EditorFirstStep()
         {
             if (!Application.isPlaying) GetScenarioSteps();
             if (!Application.isPlaying) GetScenarioObjectActivators();
+            if (!Application.isPlaying) GetScenarioComponentActivators();
 
+            OnStartedEvent?.Invoke();
+            
             if (Application.isPlaying) SetScenarioStepFromClient(0);
             else SetScenarioStepInEditor(scenarioSteps[0]);
-            OnStartedEvent?.Invoke();
         }
-        
+
         private void EditorPreviousStep()
         {
             if (!Application.isPlaying) GetScenarioSteps();
             if (!Application.isPlaying) GetScenarioObjectActivators();
+            if (!Application.isPlaying) GetScenarioComponentActivators();
+
 
             if (_activeStepIndex <= 0)
             {
+                OnStartedEvent?.Invoke();
                 if (Application.isPlaying) SetScenarioStepFromClient(0);
                 else SetScenarioStepInEditor(scenarioSteps[0]);
-                OnStartedEvent?.Invoke();
                 return;
             }
-            
+
             if (Application.isPlaying) SetScenarioStepFromClient(_activeStepIndex - 1);
             else SetScenarioStepInEditor(scenarioSteps[_activeStepIndex - 1]);
         }
-        
+
         private void EditorNextStep()
         {
             if (!Application.isPlaying) GetScenarioSteps();
             if (!Application.isPlaying) GetScenarioObjectActivators();
+            if (!Application.isPlaying) GetScenarioComponentActivators();
 
             for (int i = 0; i < scenarioSteps.Length; i++)
             {
                 if (CurrentStep == scenarioSteps[i])
                 {
-                    if (i >= scenarioSteps.Length -1)
+                    if (i >= scenarioSteps.Length - 1)
                     {
                         OnStoppedEvent?.Invoke();
                         return;
                     }
 
                     if (Application.isPlaying) SetScenarioStepFromClient(i + 1);
-                    else SetScenarioStepInEditor(scenarioSteps[i+1]);
+                    else SetScenarioStepInEditor(scenarioSteps[i + 1]);
                     return;
                 }
             }
@@ -156,7 +209,8 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
         {
             if (!Application.isPlaying) GetScenarioSteps();
             if (!Application.isPlaying) GetScenarioObjectActivators();
-            
+            if (!Application.isPlaying) GetScenarioComponentActivators();
+
             if (Application.isPlaying) SetScenarioStepFromClient(scenarioSteps.Length - 1);
             else SetScenarioStepInEditor(scenarioSteps[^1]);
         }
@@ -169,8 +223,8 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             }
             else
             {
-                //For in editor testing
-                lastStepIndex = _activeStepIndex;
+                // For in editor testing
+                _lastStepIndex = _activeStepIndex;
                 _activeStepIndex = GetStepIndex(step);
                 ActivateCurrentStep();
             }
@@ -181,14 +235,15 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             if (Application.isPlaying)
             {
                 if (CurrentStep == step) return;
-                lastStepIndex = _activeStepIndex;
+                _lastStepIndex = _activeStepIndex;
                 _activeStepIndex = GetStepIndex(step);
             }
             else
             {
-                //For in editor testing
-                lastStepIndex = _activeStepIndex;
+                // For in editor testing
+                _lastStepIndex = _activeStepIndex;
                 _activeStepIndex = GetStepIndex(step);
+                ActivateCurrentStep();
             }
         }
 
@@ -198,30 +253,26 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             SetScenarioStep(scenarioSteps[step]);
         }
 
-        [HorizontalGroup("Steps")]
-        [Button("|<")]
-        public void FirstStep()
+        public void SetFirstStep()
         {
             if (!Application.isPlaying)
             {
                 EditorFirstStep();
                 return;
             }
-            
+
             OnStartedEvent?.Invoke();
             SetScenarioStepFromClient(0);
         }
-        
-        [HorizontalGroup("Steps")]
-        [Button("<")]
-        public void PreviousStep()
+
+        public void SetPreviousStep()
         {
             if (!Application.isPlaying)
             {
                 EditorPreviousStep();
                 return;
             }
-            
+
             if (_activeStepIndex <= 0)
             {
                 OnStartedEvent?.Invoke();
@@ -231,17 +282,15 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 SetScenarioStepFromClient(_activeStepIndex - 1);
             }
         }
-        
-        [HorizontalGroup("Steps")]
-        [Button(">")]
-        public void NextStep()
+
+        public void SetNextStep()
         {
             if (!Application.isPlaying)
             {
                 EditorNextStep();
                 return;
             }
-            
+
             if (_activeStepIndex >= scenarioSteps.Length - 1)
             {
                 OnStoppedEvent?.Invoke();
@@ -251,30 +300,22 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 SetScenarioStepFromClient(_activeStepIndex + 1);
             }
         }
-        
-        [HorizontalGroup("Steps")]
-        [Button(">|")]
-        public void LastStep()
+
+        public void SetLastStep()
         {
             if (!Application.isPlaying)
             {
                 EditorLastStep();
                 return;
             }
-            
+
             SetScenarioStepFromClient(scenarioSteps.Length - 1);
         }
 
-        /// <summary>
-        /// Scenario step callback
-        /// </summary>
-        /// <param name="prev"></param>
-        /// <param name="next"></param>
-        /// <param name="asServer"></param>
         private void OnScenarioStepChange(int prev, int next, bool asServer)
         {
             Debug.Log("Received callback for scenario step change to " + next + ", asServer = " + asServer, this);
-            //Make sure it only runs ones when client and server are active
+            // Make sure it only runs once when client and server are active
             ActivateCurrentStep();
         }
 
@@ -285,27 +326,34 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
                 if (scenarioSteps[i] == step)
                 {
                     return i;
-                } 
+                }
             }
 
             return 0;
         }
 
         private void ActivateCurrentStep()
-        { 
-            if (lastStepIndex != _activeStepIndex) DeactivateLastStep();
+        {
+            if (_lastStepIndex != _activeStepIndex) DeactivateLastStep();
 
             if (!Application.isPlaying) GetScenarioSteps();
             if (!Application.isPlaying) GetScenarioObjectActivators();
-            
+            if (!Application.isPlaying) GetScenarioComponentActivators();
+
             CurrentStep.gameObject.SetActive(true);
 
-            //This triggers all ObjectActivators to set their activation state
+            // This triggers all ObjectActivators to set their activation state
             foreach (ScenarioObjectActivator objectActivator in _scenarioObjectActivators)
             {
-                objectActivator.ControllerOnOnStepChangeEvent(CurrentStep);
+                objectActivator.ControllerOnStepChangeEvent(CurrentStep);
             }
             
+            // This triggers all ComponentActivators to set their activation state
+            foreach (ScenarioComponentActivator componentActivator in _scenarioComponentActivators)
+            {
+                componentActivator.ControllerOnStepChangeEvent(CurrentStep);
+            }
+
             OnStepChangedEvent?.Invoke(CurrentStep);
             onStepActivated?.Invoke();
             CurrentStep.onStepStarted?.Invoke();
@@ -315,17 +363,18 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
         {
             if (!Application.isPlaying) GetScenarioSteps();
             if (!Application.isPlaying) GetScenarioObjectActivators();
-            
-            if (lastStepIndex != _activeStepIndex)
+            if (!Application.isPlaying) GetScenarioComponentActivators();
+
+            if (_lastStepIndex != _activeStepIndex)
             {
-                if (scenarioSteps[lastStepIndex])
+                if (scenarioSteps[_lastStepIndex])
                 {
-                    scenarioSteps[lastStepIndex].onStepStopped?.Invoke();
-                    scenarioSteps[lastStepIndex].gameObject.SetActive(false);
+                    scenarioSteps[_lastStepIndex].onStepStopped?.Invoke();
+                    scenarioSteps[_lastStepIndex].gameObject.SetActive(false);
                 }
             }
         }
-        
+
         public UnityEvent onStepActivated;
     }
 }

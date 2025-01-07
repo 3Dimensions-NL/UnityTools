@@ -14,5 +14,19 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
                 go.SetActive(visible);
             }
         }
+        
+        public void CollectChildren()
+        {
+            gameObjects = new GameObject[transform.childCount];
+
+            for (int i = 0; i < gameObjects.Length; i++)
+            {
+                gameObjects[i] = transform.GetChild(i).gameObject;
+            }
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
     }
 }

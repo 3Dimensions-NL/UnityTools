@@ -1,6 +1,6 @@
-using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Text
 {
     public class TextMeshProAnimator : MonoBehaviour
@@ -10,16 +10,14 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Text
         [SerializeField] private bool useAnimateCompletion;
         public string textToDisplay = "Some text";
 
-        [BoxGroup("Timed animation"), HideIf("useAnimateCompletion")]
-        public float onEnableDelay = 2f;
+        // Fields for Timed Animation
+        [SerializeField] private float onEnableDelay = 2f;
+        [SerializeField] private float nextCharacterDelay = 0.1f;
 
-        [BoxGroup("Timed animation"), HideIf("useAnimateCompletion")]
-        public float nextCharacterDelay = 0.1f;
+        // Fields for Animated Completion
+        [SerializeField] [Range(0, 1)] private float animatedCompletion;
 
-        [BoxGroup("Animated completion"), ShowIf("useAnimateCompletion"), Range(0, 1)]
-        public float animatedCompletion;
-
-        [BoxGroup("Animated completion"), ShowIf("useAnimateCompletion"), ShowInInspector]
+        // Private runtime property
         private int CharacterCount => (int)(textToDisplay.Length * animatedCompletion);
 
         private float _elapsedTime;
@@ -41,7 +39,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Text
                 {
                     text.text += textToDisplay[i];
                 }
-
             }
             else
             {

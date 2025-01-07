@@ -14,27 +14,25 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
         
         private void Start()
         {
-            ScenarioController.Instance.OnStartedEvent += ControllerOnOnStartedEvent;
-            ScenarioController.Instance.OnStoppedEvent += ControllerOnOnStoppedEvent;
-            // ScenarioController.Instance.OnStepChangeEvent += ControllerOnOnStepChangeEvent;
+            ScenarioController.Instance.OnStartedEvent += ControllerOnStartedEvent;
+            ScenarioController.Instance.OnStoppedEvent += ControllerOnStoppedEvent;
             
             foreach (GameObject go in gameObjectsToActivate)
             {
                 go.SetActive(false);
             }
 
-            ControllerOnOnStepChangeEvent(ScenarioController.Instance.CurrentStep);
+            ControllerOnStepChangeEvent(ScenarioController.Instance.CurrentStep);
         }
 
         private void OnDestroy()
         {
             if (ScenarioController.Instance == null) return;
-            ScenarioController.Instance.OnStartedEvent -= ControllerOnOnStartedEvent;
-            ScenarioController.Instance.OnStoppedEvent -= ControllerOnOnStoppedEvent;
-            // ScenarioController.Instance.OnStepChangeEvent -= ControllerOnOnStepChangeEvent;
+            ScenarioController.Instance.OnStartedEvent -= ControllerOnStartedEvent;
+            ScenarioController.Instance.OnStoppedEvent -= ControllerOnStoppedEvent;
         }
         
-        private void ControllerOnOnStartedEvent()
+        private void ControllerOnStartedEvent()
         {
             foreach (GameObject go in gameObjectsToActivate)
             {
@@ -42,7 +40,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             }
         }
         
-        private void ControllerOnOnStoppedEvent()
+        private void ControllerOnStoppedEvent()
         {
             foreach (GameObject go in gameObjectsToActivate)
             {
@@ -50,7 +48,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             }
         }
 
-        public void ControllerOnOnStepChangeEvent(ScenarioStep step)
+        public void ControllerOnStepChangeEvent(ScenarioStep step)
         {
             bool contains = stepsWhereActivated.Contains(step);
             foreach (GameObject go in gameObjectsToActivate)
@@ -64,7 +62,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Scenarios
             {
                 if (activator != this)
                 {
-                    activator.ControllerOnOnStepChangeEvent(step);
+                    activator.ControllerOnStepChangeEvent(step);
                 }
             }
 

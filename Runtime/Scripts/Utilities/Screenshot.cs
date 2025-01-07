@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Collections;
-using Sirenix.OdinInspector;
 using UnityEngine;
+
 namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
     public class Screenshot : MonoBehaviour
     {
         public int superSize = 1;
-        [InlineButton(nameof(SetPath))] public string path = "";
 
-        [BoxGroup("File name")] public string fileName = "Screenshot_";
-        [BoxGroup("File name")] public string fileSuffix;
-        [BoxGroup("File name")] public bool useDate;
+        // Replace InlineButton with ContextMenu for setting path
+        public string path = "";
+
+        // Grouping: Replaced BoxGroup with Header for logical organization
+        [Header("File Name Settings")] public string fileName = "Screenshot_";
+        public string fileSuffix;
+        public bool useDate;
 
         public bool openFileAfterCreation;
-        
-        [HideInInspector] public string lastScreenshot = "";
-        [HideInInspector] public bool renderRunning;
+
+        // Replace HideInInspector with NonSerialized
+        [NonSerialized] public string lastScreenshot = "";
+        [NonSerialized] public bool renderRunning;
 
         public Action ScreenshotCreated;
         public Action ScreenshotFailed;
 
+        [ContextMenu("Set Path")]
         public void SetPath()
         {
 #if UNITY_EDITOR
@@ -32,7 +37,8 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             Debug.Log("Path Set to: " + path);
         }
 
-        [Button]
+        // Replace Button with ContextMenu
+        [ContextMenu("Take Screenshot")]
         public void TakeScreenshot()
         {
             if (renderRunning)
@@ -56,7 +62,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             }
         }
 
-        [Button]
+        [ContextMenu("Open Last Screenshot")]
         public void OpenLastScreenshot()
         {
             if (lastScreenshot != "")
@@ -66,18 +72,19 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             }
         }
 
-        [Button]
+        [ContextMenu("Open Screenshot Folder")]
         public void OpenScreenshotFolder()
         {
             Application.OpenURL("file://" + path);
         }
 
-        IEnumerator RenderScreenshot()
+        private IEnumerator RenderScreenshot()
         {
             renderRunning = true;
-            string filename = useDate 
+            string filename = useDate
                 ? path + "/" + fileName + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day +
-                "-" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + DateTime.Now.Millisecond + ".png" 
+                  "-" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second +
+                  DateTime.Now.Millisecond + ".png"
                 : path + "/" + fileName + fileSuffix + ".png";
 
             yield return new WaitForEndOfFrame();
@@ -92,17 +99,17 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
                 Debug.LogError(e);
                 ScreenshotFailed?.Invoke();
             }
-            
+
             yield return new WaitForEndOfFrame();
             renderRunning = false;
 
             if (openFileAfterCreation) OpenLastScreenshot();
-            
+
             ScreenshotCreated?.Invoke();
-            
-            #if UNITY_EDITOR
+
+#if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
-            #endif
+#endif
         }
     }
 }

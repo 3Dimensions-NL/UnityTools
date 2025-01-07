@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.textmeshpro": "3.0.8",
+    "com.unity.textmeshpro": "3.0.9",
     "com.3dimensions.unity-tools": "file:../../Tools"
   }
 }

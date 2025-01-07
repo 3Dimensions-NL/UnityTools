@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Assets._3Dimensions.Utilities.Editor
+namespace _3Dimensions.Tools.Editor.Scripts
 {
     public static class EditorTools
     {

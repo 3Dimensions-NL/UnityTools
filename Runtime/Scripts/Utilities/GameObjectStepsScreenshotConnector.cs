@@ -1,5 +1,4 @@
 using System.Collections;
-using Sirenix.OdinInspector;
 using UnityEngine;
 namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 {
@@ -11,7 +10,6 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
         
         private int _screenshotsTaken;
 
-        [Button]
         private void TakeScreenshotsFromSteps()
         {
             _screenshotsTaken = 0;

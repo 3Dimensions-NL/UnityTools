@@ -1,7 +1,7 @@
 {
     "name": "com.3dimensions.unity-tools",
     "displayName": "3Dimensions Unity Tools",
-    "version": "0.1.5",
+    "version": "0.2.0",
     "unity": "2022.3",
     "description": "This package contains some tools written and used by 3Dimensions",
     "keywords": ["Component, Editor, Tools"],
@@ -13,6 +13,13 @@
         "url": "https://www.3dimensions.nl"
     },
     "dependencies": {
-        "com.unity.textmeshpro": "3.0.8"
-    }
+        "com.unity.textmeshpro": "3.0.9"
+    },
+    "samples": [
+        {
+            "displayName": "Sample assets",
+            "description": "Contains sample assets to used in your projects",
+            "path": "Samples~/UnityToolsSamples"
+        }
+    ]
 }
