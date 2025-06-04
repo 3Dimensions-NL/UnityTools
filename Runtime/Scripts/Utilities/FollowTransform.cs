@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 // Required for Coroutine
@@ -8,7 +9,8 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
     public class FollowTransform : MonoBehaviour
     {
         public Transform transformToFollow;
-
+        public UpdateLoop updateLoop = UpdateLoop.LateUpdate;
+        
         [Tooltip("Use world or local offset")]
         public bool worldOffset;
 
@@ -59,11 +61,33 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
         void Update()
         {
             if (!transformToFollow) return;
+            if (updateLoop != UpdateLoop.Update) return;
 
+            Calculate(Time.deltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            if (!transformToFollow) return;
+            if (updateLoop != UpdateLoop.LateUpdate) return;
+
+            Calculate(Time.deltaTime);
+        }
+
+        private void FixedUpdate()
+        {
+            if (!transformToFollow) return;
+            if (updateLoop != UpdateLoop.FixedUpdate) return;
+            
+            Calculate(Time.fixedDeltaTime);
+        }
+
+        private void Calculate(float delta)
+        {
             transform.localScale = Vector3.Lerp(
                 transform.localScale,
                 forceScale ? scale : transformToFollow.localScale,
-                Time.deltaTime * smoothScaleSpeed
+                delta * smoothScaleSpeed
             );
 
             if (!smoothen)
@@ -85,8 +109,8 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
                     if (!_resetting)
                     {
                         _resetting = true;
-                        StartCoroutine(ResetTransformRoutine());
-                        return;
+
+                        StartCoroutine(ResetTransformRoutine(delta));
                     }
 
                     return;
@@ -94,9 +118,9 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 
                 return;
             }
-
-            Vector3 lerpPosition = Vector3.Lerp(transform.position, CalculatedPosition, Time.deltaTime * smoothMoveSpeed);
-            Quaternion lerpRotation = Quaternion.Lerp(transform.rotation, CalculatedRotation, Time.deltaTime * smoothRotateSpeed);
+            
+            Vector3 lerpPosition = Vector3.Lerp(transform.position, CalculatedPosition, delta * smoothMoveSpeed);
+            Quaternion lerpRotation = Quaternion.Lerp(transform.rotation, CalculatedRotation, delta * smoothRotateSpeed);
 
             transform.SetPositionAndRotation(lerpPosition, lerpRotation);
         }
@@ -129,7 +153,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             }
         }
 
-        private IEnumerator ResetTransformRoutine()
+        private IEnumerator ResetTransformRoutine(float delta)
         {
             float duration = 0.5f;
             float elapsedTime = 0f;
@@ -139,7 +163,7 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
 
             while (elapsedTime < duration)
             {
-                elapsedTime += Time.deltaTime;
+                elapsedTime += delta;
                 float blend = elapsedTime / duration;
 
                 transform.position = Vector3.Lerp(startPosition, CalculatedPosition, blend);
@@ -151,6 +175,13 @@ namespace _3Dimensions.Tools.Runtime.Scripts.Utilities
             transform.SetPositionAndRotation(CalculatedPosition, CalculatedRotation);
             _lastPosition = transformToFollow.position;
             _resetting = false;
+        }
+
+        public enum UpdateLoop
+        {
+            Update,
+            LateUpdate,
+            FixedUpdate
         }
     }
 }

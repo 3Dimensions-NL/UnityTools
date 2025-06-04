@@ -1,7 +1,7 @@
 using UnityEditor;
 namespace _3Dimensions.Tools.Editor.Scripts.Utilities
 {
-    [CustomEditor(typeof( _3Dimensions.Tools.Runtime.Scripts.Utilities.FollowTransform))]
+    [CustomEditor(typeof(_3Dimensions.Tools.Runtime.Scripts.Utilities.FollowTransform))]
     public class FollowTransformEditor : UnityEditor.Editor
     {
         private SerializedProperty _transformToFollowProp;
@@ -19,10 +19,12 @@ namespace _3Dimensions.Tools.Editor.Scripts.Utilities
         private SerializedProperty _useThresholdProp;
         private SerializedProperty _angleThresholdProp;
         private SerializedProperty _distanceThresholdProp;
+        private SerializedProperty _updateLoopProp;
 
         private void OnEnable()
         {
             _transformToFollowProp = serializedObject.FindProperty("transformToFollow");
+            _updateLoopProp = serializedObject.FindProperty("updateLoop");
             _worldOffsetProp = serializedObject.FindProperty("worldOffset");
             _positionOffsetProp = serializedObject.FindProperty("positionOffset");
             _forceScaleProp = serializedObject.FindProperty("forceScale");
@@ -44,6 +46,7 @@ namespace _3Dimensions.Tools.Editor.Scripts.Utilities
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(_transformToFollowProp);
+            EditorGUILayout.PropertyField(_updateLoopProp);
             EditorGUILayout.PropertyField(_worldOffsetProp);
             EditorGUILayout.PropertyField(_positionOffsetProp);
             EditorGUILayout.PropertyField(_forceScaleProp);
